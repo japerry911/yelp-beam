@@ -39,4 +39,6 @@ RUN pip install --upgrade --progress-bar=off pip wheel \
     && pip install -r requirements.txt \
     && rm -rf /root/.cache/pip
 
-COPY . /app
+COPY . ./
+
+WORKDIR /app/src

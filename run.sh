@@ -14,9 +14,19 @@ function _docker_compose {
   docker compose "${DC}" ${TTY} "${@}"
 }
 
+function build {
+  : "Build docker compose file"
+  docker compose build
+}
+
+function build:no-cache {
+  : "Build docker compose file (no cache used)"
+  docker compose build --no-cache
+}
+
 function run_sky_beam {
   : "Run Sky-Beam with docker compose, and runs any command in arguments"
-  _docker_compose sky_beam "${@}"
+  _docker_compose sky_beam python -m sky_beam.main "${@}"
 }
 
 function file_linters {

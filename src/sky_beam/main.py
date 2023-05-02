@@ -1,10 +1,5 @@
-import logging
-
-
 def main():
-    logger = logging.getLogger("TEST")
-
-    logger.info("~~~TEST~~~")
+    print("test")
 
 
 if __name__ == "__main__":
