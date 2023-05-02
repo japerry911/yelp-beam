@@ -1,0 +1,8 @@
+services:
+  file_linters:
+    image: linters:latest
+    build:
+      context: .
+      target: file_linters
+    volumes:
+      - '.:/app'
