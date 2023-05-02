@@ -21,11 +21,11 @@ function file_linters {
 
 function run_file_linters {
   : "Execute File Linters, which are Black, isort, and Flake8"
-  printf "\n---Running Black Code Formatting---\n"
-  file_linters black .
-
   printf "\n---Running isort Import Sorter---\n"
   file_linters isort .
+
+  printf "\n---Running Black Code Formatting---\n"
+  file_linters black .
 
   printf "\n---Running flake8 Inspector---\n"
   file_linters flake8 .
