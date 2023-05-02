@@ -1,8 +1,10 @@
-import apache_beam as beam
+import logging
 
 
 def main():
-    pass
+    logger = logging.getLogger("TEST")
+
+    logger.info("~~~TEST~~~")
 
 
 if __name__ == "__main__":

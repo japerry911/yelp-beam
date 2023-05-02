@@ -1,8 +1,15 @@
 services:
   file_linters:
-    image: linters:latest
+    image: file_linters:latest
     build:
       context: .
       target: file_linters
     volumes:
-      - '.:/app'
+      - ".:/app"
+  sky_beam:
+    image: sky_beam:latest
+    build:
+      context: .
+      target: sky_beam
+    volumes:
+      - ".:/app"

@@ -14,8 +14,13 @@ function _docker_compose {
   docker compose "${DC}" ${TTY} "${@}"
 }
 
+function run_sky_beam {
+  : "Run Sky-Beam with docker compose, and runs any command in arguments"
+  _docker_compose sky_beam "${@}"
+}
+
 function file_linters {
-  : "Run file_linter docker container with docker compose, and run any command in arguments"
+  : "Run file_linter docker container with docker compose, and runs any command in arguments"
   _docker_compose file_linters "${@}"
 }
 
