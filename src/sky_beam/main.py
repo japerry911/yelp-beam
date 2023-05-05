@@ -34,7 +34,7 @@ def run(
             >> beam.io.ReadFromText(
                 f"gs://{BUCKET_NAME}/{folder_name}/yelp_academic_dataset_business.json",
             )
-            | "Sample N elements" >> beam.combiners.Sample.FixedSizeGlobally(2)
+            | "Sample N elements" >> beam.combiners.Sample.FixedSizeGlobally(1)
             | "Print" >> beam.Map(print)
         )
 
