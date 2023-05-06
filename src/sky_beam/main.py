@@ -6,11 +6,19 @@ from time import perf_counter
 import apache_beam as beam
 from apache_beam.options.pipeline_options import PipelineOptions, SetupOptions
 
+from .utils import try_key_all
+
+
+def test(row):
+    return try_key_all(row)
+
 
 def run(
     folder_name: str = "yelp-data/2023-04-30",
     argv=None,
 ):
+    """INSERT DOCSTRING HERE"""
+
     BUCKET_NAME = "sky-beam-raw-data"
 
     parser = argparse.ArgumentParser()
@@ -34,9 +42,14 @@ def run(
             >> beam.io.ReadFromText(
                 f"gs://{BUCKET_NAME}/{folder_name}/yelp_academic_dataset_business.json",
             )
-            | "Sample N elements" >> beam.combiners.Sample.FixedSizeGlobally(1)
-            | "Print" >> beam.Map(print)
+            | "Parse JSON" >> beam.Map(json.loads)
+            | "Test" >> beam.Map(test)
+            | "Sample 1 row" >> beam.combiners.Sample.FixedSizeGlobally(1)
+            | "Print" >> beam.Map(lambda x: print(json.dumps(x, indent=4)))
         )
+
+
+# 150346
 
 
 def main(*args):
