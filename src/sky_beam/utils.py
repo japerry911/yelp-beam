@@ -1,9 +1,10 @@
 import ast
-import json
 
 
 def try_key(d, key, default=None):
-    """Try to get a key from a dictionary, returning a default value if it doesn't exist."""
+    """Try to get a key from a dictionary, returning a default value if it doesn't
+    exist.
+    """
     if d is None:
         return default
 

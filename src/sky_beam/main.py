@@ -9,8 +9,19 @@ from apache_beam.options.pipeline_options import PipelineOptions, SetupOptions
 from .utils import try_key_all
 
 
-def test(row):
+column_names = set()
+column_names.add("business_id:STRING")
+
+
+def flatten_parse(row):
     return try_key_all(row)
+
+
+def record_all_columns(row):
+    for key in row.keys():
+        column_names.add(f"{key}:STRING")
+
+    return row
 
 
 def run(
@@ -20,6 +31,7 @@ def run(
     """INSERT DOCSTRING HERE"""
 
     BUCKET_NAME = "sky-beam-raw-data"
+    GCP_PROJECT_ID = "sky-beam"
 
     parser = argparse.ArgumentParser()
 
@@ -35,6 +47,9 @@ def run(
     pipeline_options = PipelineOptions(pipeline_args)
     pipeline_options.view_as(SetupOptions).save_main_session = True
 
+    print("@")
+    print(column_names)
+
     with beam.Pipeline(options=pipeline_options) as p:
         (
             p
@@ -43,9 +58,15 @@ def run(
                 f"gs://{BUCKET_NAME}/{folder_name}/yelp_academic_dataset_business.json",
             )
             | "Parse JSON" >> beam.Map(json.loads)
-            | "Test" >> beam.Map(test)
-            | "Sample 1 row" >> beam.combiners.Sample.FixedSizeGlobally(1)
-            | "Print" >> beam.Map(lambda x: print(json.dumps(x, indent=4)))
+            | "Flatten Parse" >> beam.Map(flatten_parse)
+            | "Record all Columns" >> beam.Map(record_all_columns)
+            | "Write to BigQuery"
+            >> beam.io.WriteToBigQuery(
+                table="yelp_academic_dataset_business",
+                dataset="yelp",
+                project=GCP_PROJECT_ID,
+                schema=",".join(column_names),
+            )
         )
 
 
