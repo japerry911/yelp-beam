@@ -12,4 +12,5 @@ services:
       context: .
       target: sky_beam
     volumes:
+      - "~/.config/:/root/.config"
       - ".:/app"
