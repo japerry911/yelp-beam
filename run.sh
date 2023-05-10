@@ -24,7 +24,7 @@ function build:no-cache {
   docker compose build --no-cache
 }
 
-function run_sky_beam {
+function sky_beam:lrun {
   : "Run Sky-Beam with docker compose, and runs any command in arguments"
   _docker_compose sky_beam python -m sky_beam.main "${@}"
 }
