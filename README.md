@@ -17,7 +17,7 @@ python -m sky_beam.main \
   - Google Cloud Dataflow
   - Google Cloud BigQuery
   - Google Cloud Storage
-  - GitHub Actions (black formatter, isort, GitGuardian community action)
+  - GitHub Actions (black formatter, isort, flake8, GitGuardian community action)
   
 ### Accompanying Blog post
 
