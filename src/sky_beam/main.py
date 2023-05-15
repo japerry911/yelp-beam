@@ -11,6 +11,8 @@ from .schemas.yelp_academic_dataset_business import \
     bq_schema as yelp_academic_dataset_business_bq_schema
 from .schemas.yelp_academic_dataset_check_in import \
     bq_schema as yelp_academic_dataset_check_in_bq_schema
+from .schemas.yelp_academic_dataset_review import \
+    bq_schema as yelp_academic_dataset_review_bq_schema
 from .utils import try_key_all
 
 
@@ -32,18 +34,6 @@ class ConvertValuesToStrings(beam.DoFn):
         for key in record:
             record[key] = str(record[key])
         yield record
-
-
-all_columns = set()
-
-
-# ToDo: remove after development
-# class test(beam.DoFn):
-#     def process(self, record, **_kwargs):
-#         for key in record:
-#             all_columns.add(key)
-#
-#         yield record
 
 
 def run(
@@ -107,10 +97,38 @@ def run(
         datasetId="yelp",
         tableId="yelp_academic_dataset_check_in",
     )
+    yelp_academic_review_table_spec = bigquery.TableReference(
+        projectId=GCP_PROJECT_ID,
+        datasetId="yelp",
+        tableId="yelp_academic_dataset_review",
+    )
 
     FILENAME_BASE = f"gs://{BUCKET_NAME}/{folder_name}/{{}}.json"
 
     with beam.Pipeline(options=pipeline_options) as p:
+        # --- Yelp Academic Dataset Review ---
+        # noinspection PyTypeChecker
+        (
+            p
+            | "Read from GCS"
+            >> beam.io.ReadFromText(
+                FILENAME_BASE.format(
+                    "yelp_academic_dataset_review",
+                )
+            )
+            | "Parse JSON" >> beam.ParDo(JsonLoads())
+            | "Flatten Parse" >> beam.ParDo(FlattenParse())
+            | "Convert Values to Strings" >> beam.ParDo(ConvertValuesToStrings())
+            | "Write to BigQuery"
+            >> beam.io.WriteToBigQuery(
+                yelp_academic_review_table_spec,
+                schema=", ".join(yelp_academic_dataset_review_bq_schema),
+                create_disposition=beam.io.BigQueryDisposition.CREATE_IF_NEEDED,
+                write_disposition=beam.io.BigQueryDisposition.WRITE_TRUNCATE,
+                custom_gcs_temp_location=known_args.temp_location,
+            )
+        )
+
         # --- Yelp Academic Check In ---
         # noinspection PyTypeChecker
         (
