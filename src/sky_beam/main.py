@@ -7,12 +7,10 @@ import apache_beam as beam
 from apache_beam.io.gcp.internal.clients import bigquery
 from apache_beam.options.pipeline_options import PipelineOptions, SetupOptions
 
-from .schemas.yelp_academic_dataset_business import (
-    bq_schema as yelp_academic_dataset_business_bq_schema,
-)
-from .schemas.yelp_academic_dataset_check_in import (
-    bq_schema as yelp_academic_dataset_check_in_bq_schema,
-)
+from .schemas.yelp_academic_dataset_business import \
+    bq_schema as yelp_academic_dataset_business_bq_schema
+from .schemas.yelp_academic_dataset_check_in import \
+    bq_schema as yelp_academic_dataset_check_in_bq_schema
 from .utils import try_key_all
 
 
