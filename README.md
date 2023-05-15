@@ -7,7 +7,7 @@ python -m sky_beam.main \
 --folder_name <RAW-DATA-FOLDER-PREFIX> \
 --temp_location <GCS-BUCKET-LOCATION> \
 --project <PROJECT-ID> \
---region <REGION>>
+--region <REGION>
 
 ### Accompanying Blog post
 
