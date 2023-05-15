@@ -19,6 +19,4 @@ python -m sky_beam.main \
   - Google Cloud Storage
   - GitHub Actions (black formatter, isort, flake8, GitGuardian community action)
   
-### Accompanying Blog post
-
-- ADD LINK HERE
+### Accompanying Blog post located [here](https://jackskylord.medium.com/apache-beam-exploration-50905f1c16b8)
